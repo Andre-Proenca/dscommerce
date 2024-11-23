@@ -73,5 +73,16 @@ public class Order {
         return items.stream().map(x -> x.getProduct()).toList();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order order)) return false;
 
+        return getId() != null ? getId().equals(order.getId()) : order.getId() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
+    }
 }
