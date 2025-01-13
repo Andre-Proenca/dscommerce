@@ -1,11 +1,5 @@
 package com.softcraft.dscommerce.services;
 
-import com.softcraft.dscommerce.dto.ProductDTO;
-import com.softcraft.dscommerce.entities.Product;
-import com.softcraft.dscommerce.repositories.ProductRepository;
-import com.softcraft.dscommerce.services.exceptions.DatabaseException;
-import com.softcraft.dscommerce.services.exceptions.ResourceNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -13,6 +7,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.softcraft.dscommerce.dto.ProductDTO;
+import com.softcraft.dscommerce.dto.ProductMinDTO;
+import com.softcraft.dscommerce.entities.Product;
+import com.softcraft.dscommerce.repositories.ProductRepository;
+import com.softcraft.dscommerce.services.exceptions.DatabaseException;
+import com.softcraft.dscommerce.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProductService {
@@ -26,9 +29,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(String name, Pageable pageable) {
+    public Page<ProductMinDTO> findAll(String name, Pageable pageable) {
         Page<Product> listProducts = repository.searchByName(name, pageable);
-        return listProducts.map(x -> new ProductDTO(x));
+        return listProducts.map(x -> new ProductMinDTO(x));
     }
 
     @Transactional
