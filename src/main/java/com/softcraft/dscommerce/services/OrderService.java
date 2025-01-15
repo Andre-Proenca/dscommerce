@@ -22,8 +22,7 @@ import com.softcraft.dscommerce.services.exceptions.ResourceNotFoundException;
 public class OrderService {
 
 	@Autowired
-	private OrderRepository repository;
-	
+	private OrderRepository repository;	
 	
 	@Autowired
 	private ProductRepository productRepository;
@@ -34,10 +33,13 @@ public class OrderService {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired private AuthService authService;
+	
 	@Transactional(readOnly = true)
     public OrderDTO findById(Long id) {
             Order order = repository.findById(id).orElseThrow(
                     () -> new ResourceNotFoundException("RECURSO NAO ENCONTRADO!"));
+            authService.validateSelfOrAdmin(order.getClient().getId());
             return new OrderDTO(order);
     }
 
